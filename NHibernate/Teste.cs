@@ -52,11 +52,9 @@ namespace NHibernate
         {
             return Fluently.Configure()
                 .Database(MsSqlConfiguration.MsSql2012.ConnectionString(c => c.FromConnectionStringWithKey("defaultConnection")))
-                .Mappings(val => val.AutoMappings.Add(AutoMap.AssemblyOf<Cliente>(new AutoMappingConfiguration())
-                .Override<Cliente>(map =>
-                {
-                    map.Map(x => x.Observacoes).CustomType("StringClob").CustomSqlType("text");
-                })));
+                .Mappings(val => val.AutoMappings.Add(AutoMap.AssemblyOf<Cliente>(new AutoMappingConfiguration()).Conventions
+                .AddFromAssemblyOf<AutoMappingConfiguration>()
+                .UseOverridesFromAssemblyOf<AutoMappingConfiguration>()));
         }
 
         private void InsertTest(int totalInsert)
@@ -69,7 +67,7 @@ namespace NHibernate
 
             for (var iC = 0; iC < totalInsert; iC++)
             {
-                var cliente = Create();
+                var cliente = Cliente.Create();
 
                 Session.Save(cliente);
             }
@@ -109,23 +107,6 @@ namespace NHibernate
 
             var totalTime = DateTime.Now.Subtract(datetimeBefore).Seconds;
             Console.WriteLine("Tempo: " + totalTime + " segundos.");
-        }
-
-        private static Cliente Create()
-        {
-            var cliente = new Cliente
-            {
-                Nome = "John",
-                Sobrenome = "Doe",
-                Email = "john@doe.com.br",
-                EstadoCivil = 1,
-                Nascimento = new DateTime(2002, 11, 20),
-                Usuario = "JD",
-                Senha = "JD123",
-                Observacoes = "1".PadLeft(1000, '1')
-            };
-
-            return cliente;
         }
     }
 }

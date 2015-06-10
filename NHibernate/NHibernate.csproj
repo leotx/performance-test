@@ -60,6 +60,7 @@
   <ItemGroup>
     <Compile Include="AutoMappingConfiguration.cs" />
     <Compile Include="Cliente.cs" />
+    <Compile Include="ClienteOverride.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Teste.cs" />
