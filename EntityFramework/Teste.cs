@@ -10,6 +10,7 @@ namespace EntityFramework
         {
             using (var db = new ClienteContext())
             {
+                db.Database.EnsureDeleted();
                 db.Database.EnsureCreated();
             }
 

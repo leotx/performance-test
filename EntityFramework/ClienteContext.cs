@@ -15,7 +15,7 @@ namespace EntityFramework
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
-            builder.Entity<Cliente>().Key(v => v.Id);
+            builder.Entity(ClienteMap.BuildAction());
 
             base.OnModelCreating(builder);
         }
