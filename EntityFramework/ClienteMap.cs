@@ -1,22 +1,17 @@
-﻿using System;
-using Microsoft.Data.Entity.Metadata.Builders;
+using System.Data.Entity.ModelConfiguration;
 
 namespace EntityFramework
 {
-    public class ClienteMap
+    public class ClienteMap : EntityTypeConfiguration<Cliente>
     {
-        public static Action<EntityTypeBuilder<Cliente>> BuildAction()
+        public ClienteMap()
         {
-            return e =>
-            {
-                e.Key(x => x.Id);
-                e.Property(x => x.Email).MaxLength(100);
-                e.Property(x => x.Sobrenome).MaxLength(100);
-                e.Property(x => x.EstadoCivil).MaxLength(100);
-                e.Property(x => x.Nome).MaxLength(100);
-                e.Property(x => x.Senha).MaxLength(20);
-                e.Property(x => x.Usuario).MaxLength(50);
-            };
+            HasKey(x => x.Id);
+            Property(x => x.Email).HasMaxLength(100);
+            Property(x => x.Sobrenome).HasMaxLength(100);
+            Property(x => x.Nome).HasMaxLength(100);
+            Property(x => x.Senha).HasMaxLength(20);
+            Property(x => x.Usuario).HasMaxLength(50);
         }
     }
 }

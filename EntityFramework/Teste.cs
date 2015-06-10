@@ -6,13 +6,12 @@ namespace EntityFramework
 {
     public class Teste
     {
+        private ClienteContext ClienteDb { get; set; }
+
         public Teste()
         {
-            using (var db = new ClienteContext())
-            {
-                db.Database.EnsureDeleted();
-                db.Database.EnsureCreated();
-            }
+            ClienteDb = new ClienteContext();
+            ClienteDb.Database.Initialize(true);
 
             InsertTest(10000);
             var allCliente = SelectAll();
@@ -39,17 +38,14 @@ namespace EntityFramework
             Console.WriteLine("Iniciando Insert de " + totalInsert + " Registros");
             var datetimeBefore = DateTime.Now;
 
-            using (var db = new ClienteContext())
+            for (var iC = 0; iC < totalInsert; iC++)
             {
-                for (var iC = 0; iC < totalInsert; iC++)
-                {
-                    var cliente = Cliente.Create();
+                var cliente = Cliente.Create();
 
-                    db.Cliente.Add(cliente);
-                }
-
-                db.SaveChanges();
+                ClienteDb.Cliente.Add(cliente);
             }
+
+            ClienteDb.SaveChanges();
 
             var totalTime = DateTime.Now.Subtract(datetimeBefore).Seconds;
             Console.WriteLine("Tempo: " + totalTime + " segundos.");
@@ -60,12 +56,7 @@ namespace EntityFramework
             Console.WriteLine("Selecionando todo o conteúdo da tabela.");
             var datetimeBefore = DateTime.Now;
 
-            List<Cliente> allCliente;
-
-            using (var db = new ClienteContext())
-            {
-                allCliente = db.Cliente.ToList();
-            }
+            var allCliente = ClienteDb.Cliente.ToList();
 
             var totalTime = DateTime.Now.Subtract(datetimeBefore).Seconds;
             Console.WriteLine("Tempo: " + totalTime + " segundos.");
@@ -78,11 +69,8 @@ namespace EntityFramework
             Console.WriteLine("Limpando Tabela");
             var datetimeBefore = DateTime.Now;
 
-            using (var db = new ClienteContext())
-            {
-                db.Cliente.RemoveRange(allCliente);
-                db.SaveChanges();
-            }
+            ClienteDb.Cliente.RemoveRange(allCliente);
+            ClienteDb.SaveChanges();
 
             var totalTime = DateTime.Now.Subtract(datetimeBefore).Seconds;
             Console.WriteLine("Tempo: " + totalTime + " segundos.");
