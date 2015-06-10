@@ -1,2 +1,2 @@
-# performance-test
-NHibernate 4.0 x Entity Framework 7.0
+# Performance Test
+NHibernate 4 x Entity Framework 6
