@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 
 namespace EntityFramework
@@ -10,7 +11,7 @@ namespace EntityFramework
         {
             using (var db = new ClienteContext())
             {
-                db.Database.EnsureCreated();
+                db.Database.Initialize(true);
             }
 
             InsertTest(10000);
@@ -63,7 +64,7 @@ namespace EntityFramework
 
             using (var db = new ClienteContext())
             {
-                allCliente = db.Cliente.ToList();
+                allCliente = db.Cliente.AsNoTracking().ToList();
             }
 
             var totalTime = DateTime.Now.Subtract(datetimeBefore).Seconds;
@@ -79,7 +80,11 @@ namespace EntityFramework
 
             using (var db = new ClienteContext())
             {
-                db.Cliente.RemoveRange(allCliente);
+                allCliente.ForEach(x =>
+                {
+                    db.Entry(x).State = EntityState.Deleted;
+                });
+
                 db.SaveChanges();
             }
 

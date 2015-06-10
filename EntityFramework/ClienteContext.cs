@@ -1,6 +1,4 @@
-﻿using System;
-using System.Configuration;
-using Microsoft.Data.Entity;
+﻿using System.Data.Entity;
 
 namespace EntityFramework
 {
@@ -8,16 +6,13 @@ namespace EntityFramework
     {
         public DbSet<Cliente> Cliente { get; set; }
 
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        public ClienteContext() : base("defaultConnection")
         {
-            optionsBuilder.UseSqlServer(ConfigurationManager.ConnectionStrings["defaultConnection"].ConnectionString);
         }
 
-        protected override void OnModelCreating(ModelBuilder builder)
+        protected override void OnModelCreating(DbModelBuilder builder)
         {
-            builder.Entity<Cliente>().Key(v => v.Id);
-
-            base.OnModelCreating(builder);
+            builder.Configurations.Add(new ClienteMap());
         }
     }
 }
