@@ -5,6 +5,8 @@ using System.Linq;
 using FluentNHibernate.Automapping;
 using FluentNHibernate.Cfg;
 using FluentNHibernate.Cfg.Db;
+using NHibernate.Conventions;
+using NHibernate.Entities;
 using NHibernate.Linq;
 using NHibernate.Tool.hbm2ddl;
 
@@ -38,7 +40,44 @@ namespace NHibernate
             allCliente = SelectAll();
             RemoveAll(allCliente);
 
+            //InsertWithRelationship(1);
+            //var allCliente = SelectAll();
+            //RemoveAll(allCliente);
+
             Console.WriteLine("Press [enter] to quit");
+        }
+
+        private void InsertWithRelationship(int totalInsert)
+        {
+            Transaction = Session.BeginTransaction(IsolationLevel.ReadCommitted);
+
+            for (var iC = 0; iC < totalInsert; iC++)
+            {
+                var estado = Estado.Create();
+                Session.Save(estado);
+
+                var pais = Pais.Create();
+                Session.Save(pais);
+
+                var cidade = Cidade.Create();
+                Session.Save(cidade);
+
+                var endereco = Endereco.Create();
+                endereco.Estado = estado;
+                endereco.Pais = pais;
+                endereco.Cidade = cidade;
+                Session.Save(endereco);
+
+                var telefone = Telefone.Create();
+                Session.Save(telefone);
+
+                var cliente = Cliente.Create();
+                cliente.Enderecos.Add(endereco);
+                cliente.Telefones.Add(telefone);
+                Session.Save(cliente);
+            }
+
+            Transaction.Commit();
         }
 
         private static void CreateTable()

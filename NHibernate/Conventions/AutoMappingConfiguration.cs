@@ -1,12 +1,13 @@
 ﻿using FluentNHibernate.Automapping;
+using NHibernate.Entities;
 
-namespace NHibernate
+namespace NHibernate.Conventions
 {
     public class AutoMappingConfiguration : DefaultAutomappingConfiguration
     {
         public override bool ShouldMap(System.Type type)
         {
-            return type == typeof (Cliente);
+            return type.IsSubclassOf(typeof(Entity));
         }
     }
 }

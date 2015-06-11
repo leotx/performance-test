@@ -58,9 +58,19 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AutoMappingConfiguration.cs" />
-    <Compile Include="Cliente.cs" />
-    <Compile Include="ClienteOverride.cs" />
+    <Compile Include="Conventions\AutoMappingConfiguration.cs" />
+    <Compile Include="Conventions\ClienteOverride.cs" />
+    <Compile Include="Entities\Cidade.cs" />
+    <Compile Include="Entities\Cliente.cs" />
+    <Compile Include="Entities\Continente.cs" />
+    <Compile Include="Entities\Endereco.cs" />
+    <Compile Include="Entities\Entity.cs" />
+    <Compile Include="Entities\Estado.cs" />
+    <Compile Include="Entities\EstadoCivil.cs" />
+    <Compile Include="Entities\Pais.cs" />
+    <Compile Include="Entities\Telefone.cs" />
+    <Compile Include="Entities\TipoPessoa.cs" />
+    <Compile Include="Entities\TipoTelefone.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Teste.cs" />
@@ -69,6 +79,7 @@
     <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
