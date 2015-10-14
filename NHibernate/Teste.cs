@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Diagnostics;
 using System.Linq;
 using FluentNHibernate.Automapping;
 using FluentNHibernate.Cfg;
@@ -14,15 +15,13 @@ namespace NHibernate
 {
     public class Teste
     {
-        private ISession Session { get; }
-        private ITransaction Transaction { get; set; }
+        private ISessionFactory SessionFactory { get; set; }
 
         public Teste()
         {
             CreateTable();
 
-            var sessionFactory = Factory().BuildSessionFactory();
-            Session = sessionFactory.OpenSession();
+            SessionFactory = Factory().BuildSessionFactory();
 
             InsertTest(10000);
             var allCliente = SelectAll();
@@ -47,44 +46,48 @@ namespace NHibernate
             Console.WriteLine("Press [enter] to quit");
         }
 
-        private void InsertWithRelationship(int totalInsert)
-        {
-            Transaction = Session.BeginTransaction(IsolationLevel.ReadCommitted);
-
-            for (var iC = 0; iC < totalInsert; iC++)
-            {
-                var estado = Estado.Create();
-                Session.Save(estado);
-
-                var pais = Pais.Create();
-                Session.Save(pais);
-
-                var cidade = Cidade.Create();
-                Session.Save(cidade);
-
-                var endereco = Endereco.Create();
-                endereco.Estado = estado;
-                endereco.Pais = pais;
-                endereco.Cidade = cidade;
-                Session.Save(endereco);
-
-                var telefone = Telefone.Create();
-                Session.Save(telefone);
-
-                var cliente = Cliente.Create();
-                cliente.Enderecos.Add(endereco);
-                cliente.Telefones.Add(telefone);
-                Session.Save(cliente);
-            }
-
-            Transaction.Commit();
-        }
-
         private static void CreateTable()
         {
             var fluentConfiguration = Factory().BuildConfiguration();
             var exportDatabase = new SchemaExport(fluentConfiguration);
             exportDatabase.Execute(true, true, false);
+        }
+
+        private void InsertWithRelationship(int totalInsert)
+        {
+            using (var currentSession = SessionFactory.OpenSession())
+            {
+                using (var beginTransaction = currentSession.BeginTransaction(IsolationLevel.ReadCommitted))
+                {
+                    for (var iC = 0; iC < totalInsert; iC++)
+                    {
+                        var estado = Estado.Create();
+                        currentSession.Save(estado);
+
+                        var pais = Pais.Create();
+                        currentSession.Save(pais);
+
+                        var cidade = Cidade.Create();
+                        currentSession.Save(cidade);
+
+                        var endereco = Endereco.Create();
+                        endereco.Estado = estado;
+                        endereco.Pais = pais;
+                        endereco.Cidade = cidade;
+                        currentSession.Save(endereco);
+
+                        var telefone = Telefone.Create();
+                        currentSession.Save(telefone);
+
+                        var cliente = Cliente.Create();
+                        cliente.Enderecos.Add(endereco);
+                        cliente.Telefones.Add(telefone);
+                        currentSession.Save(cliente);
+                    }
+
+                    beginTransaction.Commit();
+                }
+            }
         }
 
         private static FluentConfiguration Factory()
@@ -99,53 +102,72 @@ namespace NHibernate
         private void InsertTest(int totalInsert)
         {
             Console.WriteLine("------------------------------------------------");
-            Console.WriteLine("Iniciando Insert de "+ totalInsert + " Registros");
-            var datetimeBefore = DateTime.Now;
+            Console.WriteLine("Iniciando insert de " + totalInsert + " registros");
+            var stopWatcher = new Stopwatch();
 
-            Transaction = Session.BeginTransaction(IsolationLevel.ReadCommitted);
-
-            for (var iC = 0; iC < totalInsert; iC++)
+            using (var currentSession = SessionFactory.OpenSession())
             {
-                var cliente = Cliente.Create();
+                using (var beginTransaction = currentSession.BeginTransaction(IsolationLevel.ReadCommitted))
+                {
+                    stopWatcher.Start();
 
-                Session.Save(cliente);
+                    for (var iC = 0; iC < totalInsert; iC++)
+                    {
+                        var cliente = Cliente.Create();
+
+                        currentSession.Save(cliente);
+                    }
+
+                    beginTransaction.Commit();
+
+                    stopWatcher.Stop();
+
+                    Console.WriteLine("Tempo total: " + stopWatcher.Elapsed);
+                }
             }
-
-            Transaction.Commit();
-
-            var totalTime = DateTime.Now.Subtract(datetimeBefore).Seconds;
-            Console.WriteLine("Tempo: " + totalTime + " segundos.");
         }
 
         private List<Cliente> SelectAll()
         {
             Console.WriteLine("Selecionando todo o conteúdo da tabela.");
-            var datetimeBefore = DateTime.Now;
+            var stopWatcher = new Stopwatch();
+            List<Cliente> allCliente;
 
-            var allCliente = Session.Query<Cliente>().ToList();
+            using (var currentSession = SessionFactory.OpenSession())
+            {
+                stopWatcher.Start();
+                allCliente = currentSession.Query<Cliente>().ToList();
+                stopWatcher.Stop();
+            }
 
-            var totalTime = DateTime.Now.Subtract(datetimeBefore).Seconds;
-            Console.WriteLine("Tempo: " + totalTime + " segundos.");
+            Console.WriteLine("Tempo: " + stopWatcher.Elapsed);
 
             return allCliente;
         }
 
-        private void RemoveAll(List<Cliente> allCliente)
+        private void RemoveAll(IEnumerable<Cliente> allCliente)
         {
             Console.WriteLine("Limpando Tabela");
-            var datetimeBefore = DateTime.Now;
+            var stopWatcher = new Stopwatch();
 
-            Transaction = Session.BeginTransaction(IsolationLevel.ReadCommitted);
-
-            foreach (var entity in allCliente)
+            using (var currentSession = SessionFactory.OpenSession())
             {
-                Session.Delete(entity);
+                using (var beginTransaction = currentSession.BeginTransaction(IsolationLevel.ReadCommitted))
+                {
+                    stopWatcher.Start();
+
+                    foreach (var entity in allCliente)
+                    {
+                        currentSession.Delete(entity);
+                    }
+
+                    beginTransaction.Commit();
+
+                    stopWatcher.Stop();
+                }
             }
 
-            Transaction.Commit();
-
-            var totalTime = DateTime.Now.Subtract(datetimeBefore).Seconds;
-            Console.WriteLine("Tempo: " + totalTime + " segundos.");
+            Console.WriteLine("Tempo: " + stopWatcher.Elapsed);
         }
     }
 }

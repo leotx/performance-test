@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 
 namespace EntityFramework
@@ -35,45 +36,47 @@ namespace EntityFramework
         private void InsertTest(int totalInsert)
         {
             Console.WriteLine("------------------------------------------------");
-            Console.WriteLine("Iniciando Insert de " + totalInsert + " Registros");
-            var datetimeBefore = DateTime.Now;
-
+            Console.WriteLine("Iniciando insert de " + totalInsert + " registros");
+            var stopWatcher = new Stopwatch();
+            
+            stopWatcher.Start();
             for (var iC = 0; iC < totalInsert; iC++)
             {
                 var cliente = Cliente.Create();
 
                 ClienteDb.Cliente.Add(cliente);
             }
-
             ClienteDb.SaveChanges();
+            stopWatcher.Stop();
 
-            var totalTime = DateTime.Now.Subtract(datetimeBefore).Seconds;
-            Console.WriteLine("Tempo: " + totalTime + " segundos.");
+            Console.WriteLine("Tempo: " + stopWatcher.Elapsed);
         }
 
         private List<Cliente> SelectAll()
         {
             Console.WriteLine("Selecionando todo o conteúdo da tabela.");
-            var datetimeBefore = DateTime.Now;
-
+            var stopWatcher = new Stopwatch();
+            
+            stopWatcher.Start();
             var allCliente = ClienteDb.Cliente.ToList();
+            stopWatcher.Stop();
 
-            var totalTime = DateTime.Now.Subtract(datetimeBefore).Seconds;
-            Console.WriteLine("Tempo: " + totalTime + " segundos.");
+            Console.WriteLine("Tempo: " + stopWatcher.Elapsed);
 
             return allCliente;
         }
 
-        private void RemoveAll(List<Cliente> allCliente)
+        private void RemoveAll(IEnumerable<Cliente> allCliente)
         {
             Console.WriteLine("Limpando Tabela");
-            var datetimeBefore = DateTime.Now;
+            var stopWatcher = new Stopwatch();
 
+            stopWatcher.Start();
             ClienteDb.Cliente.RemoveRange(allCliente);
             ClienteDb.SaveChanges();
+            stopWatcher.Stop();
 
-            var totalTime = DateTime.Now.Subtract(datetimeBefore).Seconds;
-            Console.WriteLine("Tempo: " + totalTime + " segundos.");
+            Console.WriteLine("Tempo: " + stopWatcher.Elapsed);
         }
     }
 }
