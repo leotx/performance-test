@@ -1,6 +1,6 @@
 using System.Data.Entity.ModelConfiguration;
 
-namespace EntityFramework
+namespace EntityFramework.Test
 {
     public class ClienteMap : EntityTypeConfiguration<Cliente>
     {

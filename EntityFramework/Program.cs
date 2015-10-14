@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace EntityFramework
+namespace EntityFramework.Test
 {
     internal class Program
     {

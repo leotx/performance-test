@@ -7,8 +7,8 @@
     <ProjectGuid>{3156C58B-3A5F-48A5-9E8E-23CC17C4E777}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>EntityFramework</RootNamespace>
-    <AssemblyName>EntityFramework</AssemblyName>
+    <RootNamespace>EntityFramework.Test</RootNamespace>
+    <AssemblyName>EntityFramework.Test</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>

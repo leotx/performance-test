@@ -1,6 +1,6 @@
 ﻿using System.Data.Entity;
 
-namespace EntityFramework
+namespace EntityFramework.Test
 {
     public class ClienteContext : DbContext
     {
