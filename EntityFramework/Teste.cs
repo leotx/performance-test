@@ -12,6 +12,8 @@ namespace EntityFramework.Test
         public Teste()
         {
             ClienteDb = new ClienteContext();
+            ClienteDb.Configuration.AutoDetectChangesEnabled = false;
+            ClienteDb.Configuration.ValidateOnSaveEnabled = false;
             ClienteDb.Database.Initialize(true);
 
             InsertTest(10000);
