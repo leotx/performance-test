@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace NHibernate
+namespace NHibernate.Test
 {
     internal class Program
     {

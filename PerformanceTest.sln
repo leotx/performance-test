@@ -1,11 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.22823.1
+# Visual Studio 2013
+VisualStudioVersion = 12.0.31101.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NHibernate", "NHibernate\NHibernate.csproj", "{9E1766A6-530F-47BD-8FE1-E3BDABACC27B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NHibernate.Test", "NHibernate\NHibernate.Test.csproj", "{9E1766A6-530F-47BD-8FE1-E3BDABACC27B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EntityFramework", "EntityFramework\EntityFramework.csproj", "{3156C58B-3A5F-48A5-9E8E-23CC17C4E777}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EntityFramework.Test", "EntityFramework\EntityFramework.Test.csproj", "{3156C58B-3A5F-48A5-9E8E-23CC17C4E777}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

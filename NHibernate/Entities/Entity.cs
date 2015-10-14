@@ -1,4 +1,4 @@
-﻿namespace NHibernate.Entities
+﻿namespace NHibernate.Test.Entities
 {
     public abstract class Entity
     {

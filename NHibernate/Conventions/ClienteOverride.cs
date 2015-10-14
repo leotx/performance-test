@@ -1,8 +1,8 @@
 ﻿using FluentNHibernate.Automapping;
 using FluentNHibernate.Automapping.Alterations;
-using NHibernate.Entities;
+using NHibernate.Test.Entities;
 
-namespace NHibernate.Conventions
+namespace NHibernate.Test.Conventions
 {
     public class ClienteOverride : IAutoMappingOverride<Cliente>
     {

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace NHibernate.Entities
+namespace NHibernate.Test.Entities
 {
     public class Cliente : Entity
     {

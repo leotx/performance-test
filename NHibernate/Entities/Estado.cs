@@ -1,4 +1,4 @@
-﻿namespace NHibernate.Entities
+﻿namespace NHibernate.Test.Entities
 {
     public class Estado : Entity
     {

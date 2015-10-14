@@ -6,12 +6,12 @@ using System.Linq;
 using FluentNHibernate.Automapping;
 using FluentNHibernate.Cfg;
 using FluentNHibernate.Cfg.Db;
-using NHibernate.Conventions;
-using NHibernate.Entities;
 using NHibernate.Linq;
+using NHibernate.Test.Conventions;
+using NHibernate.Test.Entities;
 using NHibernate.Tool.hbm2ddl;
 
-namespace NHibernate
+namespace NHibernate.Test
 {
     public class Teste
     {

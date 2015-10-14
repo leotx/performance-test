@@ -1,7 +1,7 @@
 ﻿using FluentNHibernate.Automapping;
-using NHibernate.Entities;
+using NHibernate.Test.Entities;
 
-namespace NHibernate.Conventions
+namespace NHibernate.Test.Conventions
 {
     public class AutoMappingConfiguration : DefaultAutomappingConfiguration
     {
